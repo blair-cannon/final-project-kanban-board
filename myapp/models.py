@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 # Referecned model classes:
 
@@ -58,14 +60,13 @@ class Size(models.Model):
 # Models with foriegn keys
 
 # Extending User model
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class User(AbstractUser):
     second_parent = models.CharField(max_length=300, blank=True, null=True)
     phone_number = models.CharField(max_length=12)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
 class Dog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
     breed = models.ForeignKey(Breed, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
@@ -78,7 +79,7 @@ class Dog(models.Model):
     aggression = models.ForeignKey(Aggression, on_delete=models.CASCADE)
     is_fixed = models.BooleanField()
     has_bitten = models.BooleanField()
-    tags = models.ManyToManyField(Tag, blank=True, null=True)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.name
