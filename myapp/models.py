@@ -48,3 +48,46 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.label
+
+class Size(models.Model):
+    label = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.label
+
+# Models with foriegn keys
+
+# Extending User model
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    second_parent = models.CharField(max_length=300, blank=True, null=True)
+    phone_number = models.CharField(max_length=12)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+
+class Dog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=300)
+    breed = models.ForeignKey(Breed, on_delete=models.CASCADE)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+    age = models.CharField(max_length=300)
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
+    birthday = models.DateField(blank=True, null=True)
+    about_me = models.CharField(max_length=2000, blank=True, null=True)
+    favorite_park = models.ForeignKey(Park, on_delete=models.CASCADE, blank=True, null=True)
+    socialization = models.ForeignKey(Socialization, on_delete=models.CASCADE)
+    aggression = models.ForeignKey(Aggression, on_delete=models.CASCADE)
+    is_fixed = models.BooleanField()
+    has_bitten = models.BooleanField()
+    tags = models.ManyToManyField(Tag, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+
+
+
+
+
+
+
