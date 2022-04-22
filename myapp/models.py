@@ -62,8 +62,8 @@ class Size(models.Model):
 # Extending User model
 class User(AbstractUser):
     second_parent = models.CharField(max_length=300, blank=True, null=True)
-    phone_number = models.CharField(max_length=12)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=12, blank=True, null=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, blank=True, null=True)
 
 class Dog(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
