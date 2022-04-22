@@ -55,6 +55,9 @@ ROOT_URLCONF = 'myproject.urls'
 
 AUTH_USER_MODEL = 'myapp.User'
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / 'media'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

@@ -59,7 +59,7 @@ class Size(models.Model):
 
 # Models with foriegn keys
 
-# Extending User model
+# Extending Django User model
 class User(AbstractUser):
     second_parent = models.CharField(max_length=300, blank=True, null=True)
     phone_number = models.CharField(max_length=12, blank=True, null=True)
@@ -84,7 +84,34 @@ class Dog(models.Model):
     def __str__(self):
         return self.name
 
+class Image(models.Model):
+    dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, upload_to='myapp/dog-images/')
+    caption = models.CharField(max_length=2000, blank=True, null=True)
+    is_profile_pic = models.BooleanField(default=True)
 
+class Connection(models.Model):
+    dog_initializer = models.ForeignKey(Dog, on_delete=models.CASCADE, related_name='initializer')
+    dog_target = models.ForeignKey(Dog, on_delete=models.CASCADE, related_name='target')
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_accepted = models.BooleanField(default=False)
+
+class Conversation(models.Model):
+    dog_creator = models.ForeignKey(Dog, on_delete=models.CASCADE, related_name='creator')
+    dog_other = models.ForeignKey(Dog, on_delete=models.CASCADE, related_name='other')
+    subject = models.CharField(max_length=2000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Message(models.Model):
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    dog_sent = models.ForeignKey(Dog, on_delete=models.CASCADE, related_name='sent')
+    dog_received = models.ForeignKey(Dog, on_delete=models.CASCADE, related_name='received')
+    content = models.CharField(max_length=3000, blank=True, null=True)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    testimony = models.CharField(max_length=3000, blank=True, null=True)
 
 
 
