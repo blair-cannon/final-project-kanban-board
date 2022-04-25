@@ -62,6 +62,9 @@ class SizeViewSet(viewsets.ModelViewSet):
     queryset = Size.objects.all()
     serializer_class = SizeSerializer
 
+
+# viewsets with filtered views:
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
