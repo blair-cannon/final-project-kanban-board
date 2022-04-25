@@ -19,11 +19,6 @@ class ParkViewSet(viewsets.ModelViewSet):
     """
     queryset = Park.objects.all()
     serializer_class = ParkSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
-    """
-    ^ Allows a Park view searching by user name bc of the foreign key relation with user_id or simply by user id
-    """
 
 class BreedViewSet(viewsets.ModelViewSet):
     """
@@ -31,11 +26,6 @@ class BreedViewSet(viewsets.ModelViewSet):
     """
     queryset = Breed.objects.all()
     serializer_class = BreedSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
-    """
-    ^ Allows an Breed view searching by user name bc of the foreign key relation with user_id or simply by user id
-    """
 
 class GenderViewSet(viewsets.ModelViewSet):
     """
@@ -43,11 +33,6 @@ class GenderViewSet(viewsets.ModelViewSet):
     """
     queryset = Gender.objects.all()
     serializer_class = GenderSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
-    """
-    ^ Allows a Gender view searching by user name bc of the foreign key relation with user_id or simply by user id
-    """
 
 class SocializationViewSet(viewsets.ModelViewSet):
     """
@@ -55,9 +40,6 @@ class SocializationViewSet(viewsets.ModelViewSet):
     """
     queryset = Socialization.objects.all()
     serializer_class = SocializationSerializer
-    """
-    ^ Allows a Socialization view searching by user name bc of the foreign key relation with user_id or simply by user id
-    """
 
 class AggressionViewSet(viewsets.ModelViewSet):
     """
@@ -65,9 +47,6 @@ class AggressionViewSet(viewsets.ModelViewSet):
     """
     queryset = Aggression.objects.all()
     serializer_class = AggressionSerializer
-    """
-    ^ Allows a Aggression view searching by user name bc of the foreign key relation with user_id or simply by user id
-    """
 
 class TagViewSet(viewsets.ModelViewSet):
     """
@@ -75,11 +54,6 @@ class TagViewSet(viewsets.ModelViewSet):
     """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
-    """
-    ^ Allows a todo view searching by user name bc of the foreign key relation with user_id or simply by user id
-    """
 
 class SizeViewSet(viewsets.ModelViewSet):
     """
@@ -94,10 +68,12 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['first_name', 'username', 'location__city', 'location__state', 'location__zipcode']
     """
-    ^ Allows a User view searching by user name bc of the foreign key relation with user_id or simply by user id
+    ^ Allows a User view searching by username, name, or loation (foriegn key relation to the city,state, and zipcode)
+    ex: /users/?first_name=Blair
+    ex: /users/?location__city=Lexington
     """
 
 class DogViewSet(viewsets.ModelViewSet):
@@ -106,10 +82,10 @@ class DogViewSet(viewsets.ModelViewSet):
     """
     queryset = Dog.objects.all()
     serializer_class = DogSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['name', 'breed__name', 'size__label', 'gender__label' ]
     """
-    ^ Allows an Dog view searching by user name bc of the foreign key relation with user_id or simply by user id
+    ^ Allows a Dog view searching by dog name, breed name, size, and gender
     """
 
 class ImageViewSet(viewsets.ModelViewSet):
@@ -118,10 +94,10 @@ class ImageViewSet(viewsets.ModelViewSet):
     """
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['dog__name']
     """
-    ^ Allows a Image view searching by user name bc of the foreign key relation with user_id or simply by user id
+    ^ Allows a Image view searching by dog name 
     """
 
 class ConnectionViewSet(viewsets.ModelViewSet):
@@ -130,8 +106,10 @@ class ConnectionViewSet(viewsets.ModelViewSet):
     """
     queryset = Connection.objects.all()
     serializer_class = ConnectionSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['dog_initializer__name', 'dog_target__name']
     """
-    ^ Allows a Connection view searching by user name bc of the foreign key relation with user_id or simply by user id
+    ^ Allows a Connection view searching by eithr dog name bc of the foreign key relation with the dog class
     """
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -140,8 +118,10 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['dog_creator__name', 'dog_other__name']
     """
-    ^ Allows a Conversation view searching by user name bc of the foreign key relation with user_id or simply by user id
+    ^ Allows a Conversation view searching by either dog name bc of the foreign key relation with dog class
     """
 
 class MessageViewSet(viewsets.ModelViewSet):
@@ -150,10 +130,10 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['conversation', 'dog_sent__name', 'dog_received__name']
     """
-    ^ Allows a Message view searching by user name bc of the foreign key relation with user_id or simply by user id
+    ^ Allows a Message view searching by conversation or by the dogs involved
     """
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -162,8 +142,8 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['user_id__name', 'user_id']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['user__name']
     """
-    ^ Allows a Comment view searching by user name bc of the foreign key relation with user_id or simply by user id
+    ^ Allows a Comment view searching by user name bc of the foreign key relation with the user class
     """
