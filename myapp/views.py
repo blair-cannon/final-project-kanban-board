@@ -1,9 +1,12 @@
 from .models import Location, Park, Breed, Gender, Socialization, Aggression, Tag, Size, User, Dog, Image, Connection, Conversation, Message, Comment
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import status, permissions, viewsets
 from .serializers import LocationSerializer, ParkSerializer, BreedSerializer, GenderSerializer, SocializationSerializer, AggressionSerializer, TagSerializer, SizeSerializer, UserSerializer, DogSerializer, ImageSerializer, ConnectionSerializer, ConversationSerializer, MessageSerializer, CommentSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.decorators import action
 
 
 class LocationViewSet(viewsets.ModelViewSet):
@@ -150,3 +153,15 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
     ^ Allows a Comment view searching by user name bc of the foreign key relation with the user class
     """
+
+class UserCreate(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format='json'):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

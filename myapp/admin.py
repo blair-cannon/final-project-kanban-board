@@ -1,5 +1,11 @@
 from django.contrib import admin
 from .models import *
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
+
+class CustomUserAdmin(UserAdmin):    
+    model = User
+    list_display = ['email']
 
 # register models to Django admin
 admin.site.register(Location)
@@ -10,7 +16,7 @@ admin.site.register(Socialization)
 admin.site.register(Aggression)
 admin.site.register(Tag)
 admin.site.register(Dog)
-admin.site.register(User)
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(Image)
 admin.site.register(Connection)
 admin.site.register(Conversation)
