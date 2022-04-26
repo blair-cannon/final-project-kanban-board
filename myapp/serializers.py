@@ -50,7 +50,12 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'second_parent', 'phone_number', 'location')
+        fields = ('email', 'username', 'password', 'second_parent', 'phone_number', 'location') 
+        """ 
+        only pull in the PROVIDED DJANGO USER FIELDS that are going to be used in creating a user, 
+        and then add your extended fields,
+        '__all__' pulls in all fields and creates an error for the validation step below
+        """
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
