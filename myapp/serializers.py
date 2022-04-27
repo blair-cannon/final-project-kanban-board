@@ -67,6 +67,11 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 class DogSerializer(serializers.ModelSerializer):
+#     User = serializers.SlugRelatedField(
+#     many=True, 
+#     read_only=True,
+#     slug_field="first_name"
+#   )
     class Meta:
         model = Dog
         fields = '__all__'
