@@ -50,7 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'second_parent', 'phone_number', 'location') 
+        fields = ('email', 'username', 'password', 'first_name', 'second_parent', 'phone_number', 'location') 
         """ 
         only pull in the PROVIDED DJANGO USER FIELDS that are going to be used in creating a user, 
         and then add your extended fields,
@@ -67,11 +67,39 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 class DogSerializer(serializers.ModelSerializer):
-#     User = serializers.SlugRelatedField(
-#     many=True, 
-#     read_only=True,
-#     slug_field="first_name"
-#   )
+    user = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="first_name"
+  )
+    breed = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="name"
+  )
+    size = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="label"
+  )
+    gender = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="label"
+  )
+    socialization = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="label"
+  )
+    aggression = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="label"
+  )
+    favorite_park = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="name"
+  )
+    tags = serializers.SlugRelatedField(
+    many=True, 
+    read_only=True,
+    slug_field="label"
+  )
     class Meta:
         model = Dog
         fields = '__all__'
