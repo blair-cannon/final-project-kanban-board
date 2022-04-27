@@ -115,11 +115,41 @@ class ConnectionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ConversationSerializer(serializers.ModelSerializer):
+    created_at = serializers.SerializerMethodField()
+    dog_creator = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="name"
+  )
+    dog_other = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="name"
+  )
+
+    def get_created_at(self, obj):
+        return obj.created_at.strftime("%H:%M %m-%d")
+
     class Meta:
         model = Conversation
         fields = '__all__'
+        
 
 class MessageSerializer(serializers.ModelSerializer):
+    sent_at = serializers.SerializerMethodField()
+    dog_sent = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="name"
+  )
+    dog_received = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="name"
+  )
+    conversation = serializers.SlugRelatedField( 
+    read_only=True,
+    slug_field="subject"
+  )
+
+    def get_sent_at(self, obj):
+        return obj.sent_at.strftime("%H:%M %m-%d")    
     class Meta:
         model = Message
         fields = '__all__'
