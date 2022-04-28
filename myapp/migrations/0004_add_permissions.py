@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.contrib.auth.models import Group, Permission
 from django.core.management.sql import emit_post_migrate_signal
@@ -11,9 +10,14 @@ logger = logging.getLogger(__name__)
 
 role_permissions = {
     'Dog Owners': [
-       'Can view message',
-       'Can delete message',
-       'Can add message',
+       'Can view conversation',
+       'Can delete conversation',
+       'Can add conversation',
+       'Can change conversation',
+        'Can view dog',
+       'Can delete dog',
+       'Can add dog',
+       'Can change dog',
     ],
 }
 
@@ -29,23 +33,22 @@ def add_role_permissions(apps, schema_editor):
             role.permissions.add(perm)
         role.save()
 
-# def remove_role_permissions(apps, schema_editor):
-#     for r in role_permissions:
-#         for p in role_permissions[r]:
-#             perm, created2 = Permission.objects.get(name=p)
-#             role.permissions.remove(perm)
-#         Group.objects.remove(name=r)
-
+def remove_role_permissions(apps, schema_editor):
+    for r in role_permissions:
+        for p in role_permissions[r]:
+            perm, created2 = Permission.objects.get(name=p)
+            role.permissions.remove(perm)
+        Group.objects.remove(name=r)
 
 class Migration(migrations.Migration):
     dependencies = [
         ('contenttypes', '__latest__'),
         ('auth', '__latest__'),
-        ('myapp', '0002_alter_user_options'),
+        ('myapp', '0003_add_default_groups'),
     ]
 
     operations = [
-        migrations.RunPython(add_role_permissions),
+        migrations.RunPython(add_role_permissions, remove_role_permissions),
     ]
 
 # Users don't have perms to start unless superuser
