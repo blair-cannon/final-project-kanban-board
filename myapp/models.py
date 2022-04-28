@@ -1,6 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import Group, AbstractUser
 from django.conf import settings
+from django.dispatch import receiver
+
 
 # Referecned model classes:
 
@@ -59,11 +61,19 @@ class Size(models.Model):
 
 # Models with foriegn keys
 
-# Extending Django User model
 class User(AbstractUser):
     second_parent = models.CharField(max_length=300, blank=True, null=True)
     phone_number = models.CharField(max_length=12, blank=True, null=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return self.username
+
+@receiver(models.signals.post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        g = Group.objects.get(name='Dog Owners') 
+        g.user_set.add(instance)
 
 class Dog(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io']
 
 
-# SITE_ID = 1
+SITE_ID = 1
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
